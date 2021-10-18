@@ -1,0 +1,11 @@
+jsonpickle==1.4.1
+json5==0.8.4
+Flask==1.1.1
+Flask-Classful==0.14.2
+p2pnetwork==0.0.3
+requests==2.22.0
+pycrypto==2.6.1
+
+# C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include
+# set CL=-FI"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\stdint.h"
+# cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build"
