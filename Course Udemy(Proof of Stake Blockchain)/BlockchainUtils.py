@@ -8,7 +8,6 @@ class BlockchainUtils():
         dataString=json.dumps(data)
         dataBytes=dataString.encode('utf-8')
         dataHash=SHA256.new(dataBytes)
-
         return dataHash
 
    
