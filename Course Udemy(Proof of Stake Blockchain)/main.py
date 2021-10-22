@@ -7,14 +7,28 @@ import pprint
 from Blockchain import BlockChain
 from AccountModel import AccountModel
 from Node import Node
+import sys
 
+
+# python main.py localhost 10001
 
 if __name__ == '__main__':
-    node=Node()
 
-    pprint.pprint(node.blockChain)
-    pprint.pprint(node.wallet)
-    pprint.pprint(node.transitionPool)
+
+    ip=sys.argv[1]
+    port=int(sys.argv[2])
+
+    print(ip,port)
+    node=Node(ip,port)
+
+    node.startP2P()
+
+    # if port == 10002:
+    #     node.p2p.connect_with_node('localhost',10001)
+
+    # pprint.pprint(node.blockChain)
+    # pprint.pprint(node.wallet)
+    # pprint.pprint(node.transitionPool)
 
 
     # blockchain=BlockChain()

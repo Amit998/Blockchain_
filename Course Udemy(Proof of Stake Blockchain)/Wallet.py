@@ -44,11 +44,8 @@ class Wallet():
 
     def createBlock(self,transactions,lastHash,blockCount):
         block=Block(transactions,lastHash,self.publicKeyString(),blockCount)
-
         signature=self.sign(block.payload())
-
         block.sign(signature)
-
         return block
 
 

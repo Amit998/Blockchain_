@@ -39,7 +39,6 @@ class BlockChain():
     
     def getCoveredTransactionSet(self,transactions):
         coveredTransactions=[]
-
         for transaction in transactions:
             if self.transactionCoverd(transaction):
                 coveredTransactions.append(transaction)
