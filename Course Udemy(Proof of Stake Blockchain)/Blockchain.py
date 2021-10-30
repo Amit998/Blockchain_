@@ -2,15 +2,12 @@ from Block import Block
 from BlockchainUtils import BlockchainUtils
 from AccountModel import AccountModel
 
+
 class BlockChain():
-
-
     def __init__(self):
         self.blocks=[Block.genesis()]
         self.accountModel=AccountModel()
 
-
-    
     def addBlock(self,block):
         self.executeTransactions(block.transactions)
         self.blocks.append(block)

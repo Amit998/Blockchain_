@@ -1,7 +1,9 @@
 from p2pnetwork.node import Node
 from PeerDiscoveryHandler import PeerDiscoveryHandler
 from SocketConnector import SocketConnector
-from SocketConnector import SocketConnector
+from BlockchainUtils import BlockchainUtils
+import json
+
 
 class SocketCommunication(Node):
     def __init__(self,ip,port):
@@ -22,7 +24,7 @@ class SocketCommunication(Node):
     
     def inbound_node_connected(self, connected_node):
         print("inbound connection")
-        self.peerDiscoveryHandler.handshake(connected_node,"Handshake.... ")
+        self.peerDiscoveryHandler.handshake(connected_node)
         self.send_to_node(connected_node,"Hi I am the node you are connected to")
 
         # return super().inbound_node_connected(connected_node)
@@ -34,7 +36,12 @@ class SocketCommunication(Node):
     
 
     def node_message(self, connected_node, message):
-        print(message)
+        message=BlockchainUtils.decode(json.dumps(message))
+        
+
+        if not type(message) == type("message"):
+            if message.messageType == "DISCOVERY":
+                self.peerDiscoveryHandler.handleMessage(message)
     
     def send(self,recevier,message):
         self.send_to_node(recevier,message)
