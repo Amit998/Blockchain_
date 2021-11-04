@@ -1,12 +1,13 @@
 from Block import Block
 from BlockchainUtils import BlockchainUtils
 from AccountModel import AccountModel
-
+from ProofOfStake import ProofOfStake
 
 class BlockChain():
     def __init__(self):
         self.blocks=[Block.genesis()]
         self.accountModel=AccountModel()
+        self.pos=ProofOfStake()
 
     def addBlock(self,block):
         self.executeTransactions(block.transactions)
@@ -63,7 +64,40 @@ class BlockChain():
 
     def exchangeTransaction(self,transaction):
         sender=transaction.senderPublicKey
-        recevier=transaction.receverPublicKey
-        amount=transaction.amount
-        self.accountModel.updateBalance(sender,-amount)
-        self.accountModel.updateBalance(recevier,amount)
+        if transaction.type == 'STAKE':
+            sender=transaction.senderPublicKey
+            recevier=transaction.receverPublicKey
+
+            if sender == recevier:
+                amount=transaction.amount
+                self.pos.update(sender,amount)
+                self.accountModel.updateBalance(sender,-amount)
+            else:
+                recevier=transaction.receverPublicKey
+                amount=transaction.amount
+                self.accountModel.updateBalance(sender,-amount)
+                self.accountModel.updateBalance(recevier,amount)
+    def nextForger(self):
+        lastBlockHash=BlockchainUtils.hash(
+            self.blocks[-1].payload()).hexdigest()
+        nextForger=self.pos.forger(lastBlockHash)
+        return nextForger
+    
+    def createBlock(self,transactionFromPool,forgerWallet):
+        coveredTransactions=self.getCoveredTransactionSet(
+            transactionFromPool
+        )
+        self.executeTransactions(coveredTransactions)
+        newBlock=forgerWallet.createBlock(coveredTransactions,BlockchainUtils.hash(self.blocks[-1].payload()).hexdigest(),len(self.blocks))
+        self.blocks.append(newBlock)
+
+        return newBlock
+    
+
+    def transactionExists(self,transaction):
+        for block in self.blocks:
+            for blockTransaction in block.transactions:
+                if transaction.equals(blockTransaction):
+                    return True
+                
+        return False

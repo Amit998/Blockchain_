@@ -10,18 +10,24 @@ from Node import Node
 import sys
 
 
-# python main.py localhost 10001 5001
+# python main.py localhost 10002 5000
+# python main.py localhost 10001 5000 resources/keys/genesisPrivateKey.pem
+# python interaction.py
 
 if __name__ == '__main__':
 
 
     ip=sys.argv[1]
     port=int(sys.argv[2])
-
     apiPort=int(sys.argv[3])
 
+    keyFile=None
+    if len(sys.argv)>4:
+        keyFile=sys.argv[4]
+
+
     print(ip,port)
-    node=Node(ip,port)
+    node=Node(ip,port,keyFile)
 
     node.startP2P()
     node.startAPI(apiPort)
